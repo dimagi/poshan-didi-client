@@ -99,7 +99,7 @@ export default {
       get() {
         if (this.chatID != "") {
           return axios
-            .get("http://localhost:5000/api/v1/messages/" + this.chatID)
+            .get("https://poshan-didi.commcarehq.org/api/v1/messages/" + this.chatID)
             .then(response => response.data);
         }
         return [];
@@ -111,7 +111,7 @@ export default {
   },
   mounted() {
     this.isFetching = true;
-    axios.get("http://localhost:5000/api/v1/users").then(response => {
+    axios.get("https://poshan-didi.commcarehq.org/api/v1/users").then(response => {
       this.data = response.data;
       this.isFetching = false;
     });
