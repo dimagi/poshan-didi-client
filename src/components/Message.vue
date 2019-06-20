@@ -16,7 +16,7 @@
       >
         <div class="content">
           <div>
-            <strong>{{msg.source}}</strong>
+            <strong>{{msg.source == 'user' ? 'benficiary' : msg.source == 'system' ? 'bot' : msg.source}}</strong>
             |
             <em>{{msg.state}}</em>
             |&nbsp;
