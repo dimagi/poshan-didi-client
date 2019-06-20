@@ -17,7 +17,10 @@
         <div class="content">
           <div>
             <strong>{{msg.source}}</strong>
-            {{msg.server_time | formatDate}}
+            |
+            <em>{{msg.state}}</em>
+            |&nbsp;
+            <strong>{{msg.server_time | formatDate}}</strong>
             <br>
             <div class="has-text-left pre">{{msg.text}}</div>
           </div>
