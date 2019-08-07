@@ -7,15 +7,15 @@
       {{ chatID }}
     </p>
     <b-field grouped>
-      <b-field label="Enter first name" horizontal expanded>
+      <b-field label="Enter TelegramID" horizontal expanded>
         <b-autocomplete
           rounded
           v-model="typedChatID"
           :open-on-focus="true"
           :data="filteredDataObj"
           :loading="isFetching"
-          field="first_name"
-          placeholder="e.g., Namrata"
+          field="id"
+          placeholder="e.g., 8945288"
           icon="magnify"
           @select="option => selected_user = option"
         >
@@ -39,7 +39,7 @@
     </b-field>
 
     <section v-if="userMessages.length">
-      <Message v-for="message in orderedMessages" v-bind:key="message.id" :msg="message"/>
+      <Message v-for="message in orderedMessages" v-bind:key="message.id" :msg="message" />
     </section>
     <div class="box no-messages" v-else>No messages, please select another user.</div>
   </section>
@@ -70,6 +70,10 @@ export default {
     filteredDataObj() {
       return this.data.filter(option => {
         return (
+          option.id
+            .toString()
+            .toLowerCase()
+            .indexOf(this.typedChatID.toLowerCase()) >= 0 ||
           option.first_name
             .toString()
             .toLowerCase()
@@ -99,7 +103,10 @@ export default {
       get() {
         if (this.chatID != "") {
           return axios
-            .get("https://poshan-didi.commcarehq.org/api/v1/messages/" + this.chatID)
+            .get(
+              "https://poshan-didi.commcarehq.org/api/v1/messages/" +
+                this.chatID
+            )
             .then(response => response.data);
         }
         return [];
@@ -111,10 +118,12 @@ export default {
   },
   mounted() {
     this.isFetching = true;
-    axios.get("https://poshan-didi.commcarehq.org/api/v1/users").then(response => {
-      this.data = response.data;
-      this.isFetching = false;
-    });
+    axios
+      .get("https://poshan-didi.commcarehq.org/api/v1/users")
+      .then(response => {
+        this.data = response.data;
+        this.isFetching = false;
+      });
   },
   components: {
     Message
