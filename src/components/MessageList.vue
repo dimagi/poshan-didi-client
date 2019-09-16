@@ -69,12 +69,20 @@ export default {
   computed: {
     filteredDataObj() {
       return this.data.filter(option => {
+        if (option.first_name != null) {
+          return (
+            option.id
+              .toString()
+              .toLowerCase()
+              .indexOf(this.typedChatID.toLowerCase()) >= 0 ||
+            option.first_name
+              .toString()
+              .toLowerCase()
+              .indexOf(this.typedChatID.toLowerCase()) >= 0
+          );
+        }
         return (
           option.id
-            .toString()
-            .toLowerCase()
-            .indexOf(this.typedChatID.toLowerCase()) >= 0 ||
-          option.first_name
             .toString()
             .toLowerCase()
             .indexOf(this.typedChatID.toLowerCase()) >= 0
@@ -102,12 +110,11 @@ export default {
     userMessages: {
       get() {
         if (this.chatID != "") {
-          return axios
-            .get(
-              "https://poshan-didi.commcarehq.org/api/v1/messages/" +
-                this.chatID
-            )
-            .then(response => response.data);
+          return (
+            axios
+              .get("https://poshan-didi.commcarehq.org/api/v1/messages/" + this.chatID)
+              .then(response => response.data)
+          );
         }
         return [];
       },
@@ -118,12 +125,10 @@ export default {
   },
   mounted() {
     this.isFetching = true;
-    axios
-      .get("https://poshan-didi.commcarehq.org/api/v1/users")
-      .then(response => {
-        this.data = response.data;
-        this.isFetching = false;
-      });
+    axios.get("https://poshan-didi.commcarehq.org/api/v1/users").then(response => {
+      this.data = response.data;
+      this.isFetching = false;
+    });
   },
   components: {
     Message
